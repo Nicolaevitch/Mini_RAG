@@ -7,7 +7,7 @@ import re
 # Configuration générale
 OLLAMA_URL = 'http://localhost:11434/api/chat'
 MODEL = 'phi3:mini'  # ou 'mistral' selon ton modèle installé
-DATASET_DIR = './mini_benchmark_data_augmented'
+DATASET_DIR = './mini_benchmark_data'
 EVAL_RESULTS = './rag_faithfulness_results.json'
 
 # Normalisation simple des réponses pour comparer

@@ -4,7 +4,7 @@ Telechargement dataset QA :
 Script load_dataset.py
 
 Telechargement LLM :
-Donner les droits au fichier dowload_llm : dowload_llm.sh
+lancer ./dowload_llm.sh
 
 Creation rag : script « create_rag”
 
