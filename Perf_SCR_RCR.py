@@ -26,7 +26,7 @@ else:
                     try:
                         results.append(json.loads(line))
                     except json.JSONDecodeError:
-                        print(f"⚠️ Ligne JSON mal formée dans {result_path.name} ignorée.")
+                        print(f"Ligne JSON mal formée dans {result_path.name} ignorée.")
 
         # Initialiser les compteurs
         total_correct_context = 0

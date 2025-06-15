@@ -4,6 +4,12 @@ Script load_dataset.py
 Telechargement LLM :
 lancer ./dowload_llm.sh
 
+Si difficultés à lancer le fichier dowload_llm.sh écrire dans l'interface de commande : 
+
+sudo apt update && sudo apt install dos2unix
+dos2unix dowload_llm.sh
+bash dowload_llm.sh
+
 Creation rag : script « create_rag”
 
 -	Simule les 2 cas : injection de contextes corrects ou incorrects.
@@ -15,10 +21,3 @@ Performance SCR/RCR : script « perf_scr_rcr”
 -	Lire ton fichier de résultats.
 -	Faire la séparation context_mode = correct / incorrect.
 -	Calculer et afficher SCR et RCR.
-
-
-Que pourrait-on ajouter pour aller vers une pipeline complète de publication scientifique (optionnel) :
-
-🔄 Répéter plusieurs runs (stochasticity)	Avoir des barres d'erreur
-📊 Grapher les performances	Générer des courbes SCR/RCR
-📄 Logger les hyperparamètres	Faciliter la reproductibilité
