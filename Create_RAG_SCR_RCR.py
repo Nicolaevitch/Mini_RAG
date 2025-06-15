@@ -54,7 +54,7 @@ def run_SCR(dataset_file, result_file):
 
     existing_keys = load_existing_keys(result_file)
 
-    for idx, line in enumerate(tqdm(lines, desc="SCR Processing")):
+    for idx, line in enumerate(tqdm(lines, desc=f"SCR Processing {dataset_file}")):
         item = json.loads(line)
         question = item['question']
 
@@ -112,7 +112,7 @@ def run_RCR(dataset_file, result_file):
 
     existing_keys = load_existing_keys(result_file)
 
-    for idx, line in enumerate(tqdm(lines, desc="RCR Processing")):
+    for idx, line in enumerate(tqdm(lines, desc=f"RCR Processing {dataset_file}")):
         item = json.loads(line)
         question = item['question']
 
@@ -173,9 +173,18 @@ Réponds uniquement en te basant sur ce contexte.
         with open(result_file, 'a', encoding='utf-8') as out_f:
             out_f.write(json.dumps(result) + '\n')
 
-# Exemple de lancement des deux méthodes
+# Lancement multi-dataset
 if __name__ == '__main__':
-    dataset = 'naturalqa_sample_augmented.json'
+    datasets = [
+        'naturalqa_sample.json',
+        'clasheval_sample.json',
+        'redditqa_sample.json',
+        'triviaqa_sample.json'
+    ]
 
-    run_SCR(dataset, 'results_SCR.jsonl')
-    run_RCR(dataset, 'results_RCR.jsonl')
+    for dataset in datasets:
+        scr_result_file = f'results_SCR_{dataset}.jsonl'
+        rcr_result_file = f'results_RCR_{dataset}.jsonl'
+
+        run_SCR(dataset, scr_result_file)
+        run_RCR(dataset, rcr_result_file)

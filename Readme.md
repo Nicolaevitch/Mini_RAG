@@ -1,5 +1,3 @@
-Readme
-
 Telechargement dataset QA : 
 Script load_dataset.py
 
@@ -20,7 +18,7 @@ Performance SCR/RCR : script « perf_scr_rcr”
 
 
 Que pourrait-on ajouter pour aller vers une pipeline complète de publication scientifique (optionnel) :
-Étape	Utile pour	Implémentable
-🔄 Répéter plusieurs runs (stochasticity)	Avoir des barres d'erreur	✅ très simple à ajouter
-📊 Grapher les performances	Générer des courbes SCR/RCR	✅ avec matplotlib
-📄 Logger les hyperparamètres	Faciliter la reproductibilité	✅ très simple
+
+🔄 Répéter plusieurs runs (stochasticity)	Avoir des barres d'erreur
+📊 Grapher les performances	Générer des courbes SCR/RCR
+📄 Logger les hyperparamètres	Faciliter la reproductibilité

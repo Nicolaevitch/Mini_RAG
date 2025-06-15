@@ -46,7 +46,8 @@ def load_existing_results():
         with open(EVAL_RESULTS, 'r', encoding='utf-8') as f:
             for line in f:
                 item = json.loads(line)
-                existing_key = (item['dataset'], item['question'])
+                question_str = json.dumps(item['question'], sort_keys=True) if isinstance(item['question'], dict) else str(item['question'])
+                existing_key = (item['dataset'], question_str)
                 existing[existing_key] = item
     return existing
 
@@ -63,7 +64,8 @@ def evaluate_dataset(filename, existing_results):
 
     for idx, line in enumerate(lines):
         item = json.loads(line)
-        key = (filename, item['question'])
+        question_str = json.dumps(item['question'], sort_keys=True) if isinstance(item['question'], dict) else str(item['question'])
+        key = (filename, question_str)
         if key not in existing_results:
             to_process.append((idx, item))
 
@@ -109,8 +111,8 @@ def evaluate_dataset(filename, existing_results):
 datasets = [
     'clasheval_sample.json',
     'redditqa_sample.json',
-    'triviaqa_sample_augmented.json',
-    'naturalqa_sample_augmented.json'
+    'triviaqa_sample.json',
+    'naturalqa_sample.json'
 ]
 
 existing_results = load_existing_results()
