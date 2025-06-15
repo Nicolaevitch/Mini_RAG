@@ -33,19 +33,38 @@ def normalize_answer(s):
     s = re.sub(r'[^a-z0-9]', '', s)
     return s
 
-# Fonction SCR
+# Fonction pour charger les clés déjà traitées
+
+def load_existing_keys(result_file):
+    existing_keys = set()
+    if os.path.exists(result_file):
+        with open(result_file, 'r', encoding='utf-8') as f:
+            for line in f:
+                entry = json.loads(line)
+                key = f"{entry['question']}|{entry['context_mode']}"
+                existing_keys.add(key)
+    return existing_keys
+
+# Fonction SCR avec reprise
 
 def run_SCR(dataset_file, result_file):
     filepath = os.path.join(DATASET_DIR, dataset_file)
     with open(filepath, 'r', encoding='utf-8') as f:
         lines = f.readlines()
 
+    existing_keys = load_existing_keys(result_file)
+
     for idx, line in enumerate(tqdm(lines, desc="SCR Processing")):
         item = json.loads(line)
         question = item['question']
-        gold_answer = str(item.get('answer') or item.get('correct_answer'))
 
         mode = random.choice(['correct', 'incorrect'])
+        key = f"{question}|{mode}"
+        if key in existing_keys:
+            continue  # Skip déjà traité
+
+        gold_answer = str(item.get('answer') or item.get('correct_answer'))
+
         if mode == 'correct' and 'correct_doc' in item:
             context = item['correct_doc']
         elif mode == 'incorrect' and 'wrong_doc' in item:
@@ -84,19 +103,26 @@ Réfléchis bien avant de répondre.
         with open(result_file, 'a', encoding='utf-8') as out_f:
             out_f.write(json.dumps(result) + '\n')
 
-# Fonction RCR
+# Fonction RCR avec reprise
 
 def run_RCR(dataset_file, result_file):
     filepath = os.path.join(DATASET_DIR, dataset_file)
     with open(filepath, 'r', encoding='utf-8') as f:
         lines = f.readlines()
 
+    existing_keys = load_existing_keys(result_file)
+
     for idx, line in enumerate(tqdm(lines, desc="RCR Processing")):
         item = json.loads(line)
         question = item['question']
-        gold_answer = str(item.get('answer') or item.get('correct_answer'))
 
         mode = random.choice(['correct', 'incorrect'])
+        key = f"{question}|{mode}"
+        if key in existing_keys:
+            continue  # Skip déjà traité
+
+        gold_answer = str(item.get('answer') or item.get('correct_answer'))
+
         if mode == 'correct' and 'correct_doc' in item:
             context = item['correct_doc']
         elif mode == 'incorrect' and 'wrong_doc' in item:
@@ -124,7 +150,6 @@ Réponds uniquement en te basant sur ce contexte.
             internal_answer = query_ollama(prompt_internal)
             context_answer = query_ollama(prompt_context)
 
-            # Simple règle de sélection
             if normalize_answer(internal_answer) == normalize_answer(gold_answer):
                 model_answer = internal_answer
             else:
